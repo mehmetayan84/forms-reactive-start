@@ -10,8 +10,13 @@
                   id="username"
                   formControlName="username"
                   class="form-control">
-                  <span *ngIf="!this.signUpForm.get('userData.username').valid && this.signUpForm.get('userData.username').touched">
-                    Please enter a valid username
+                  <span *ngIf="!signUpForm.get('userData.username').valid && signUpForm.get('userData.username').touched">
+                    <span *ngIf="signUpForm.get('userData.username').errors['forbiddenName']">
+                      Name is invalid!
+                    </span>
+                    <span *ngIf="signUpForm.get('userData.username').errors['required']">
+                      This field is required!
+                    </span>
                   </span>
               </div>
               <div class="form-group">
@@ -21,7 +26,8 @@
                   id="email"
                   formControlName="email"
                   class="form-control">
-                <span *ngIf="!this.signUpForm.get('userData.email').valid && this.signUpForm.get('userData.email').touched">
+                <span *ngIf="!signUpForm.get('userData.email').valid && 
+                signUpForm.get('userData.email').touched">
                   Please enter a valid email address
                 </span>
               </div>
@@ -33,6 +39,14 @@
               formControlName="gender"
               [value]="gender">{{ gender }}
           </label>
+        </div>
+        <div class="form-group" formArrayName="hobbies">
+          <button class="btn btn-default" type="button" (click)="onAddHobby()">Add Hobby</button>
+          <div class="form-group">
+            <input type="text" class="form-control" 
+            *ngFor="let control of signUpForm.get('hobbies').controls; let i=index"
+            [formControlName]="i">
+          </div>
         </div>
         <span *ngIf="!this.signUpForm.valid && this.signUpForm.touched">
           Please enter valid data
